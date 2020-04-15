@@ -11,63 +11,61 @@ public class Main {
 	static BufferedReader bf = new BufferedReader(new InputStreamReader(System.in));
 	static BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 	static ArrayList<Integer> result = new ArrayList<Integer>();
-	static int calc[] = new int[4]; 
+
 	public static void main(String[] args) throws NumberFormatException, IOException {
 		Scanner sc = new Scanner(System.in);
 		
 		int T = sc.nextInt();
 		int A[] = new int[T];
-		
+		int calc[] = new int[4];
 		for(int i=0; i<T;i++) {
 			A[i] = sc.nextInt();
 		}
 		for(int i=0; i<4 ;i++) {
 			calc[i] = sc.nextInt();
 		}
-		calc(A,0);
+		calc(A,0,calc,A[0]);
 		solve();
 		
 	}
-
-	public static void sum(int A[],int count)  {
-		if(calc[0]==0) return ;
-		calc[0]--;
-		A[count+1] = A[count] + A[count+1];
-		calc(A,count+1);
-		
-	}
-	public static void del(int A[],int count) {
-		if(calc[1]==0) return ;
-		calc[1]--;
-		A[count+1] = A[count] - A[count+1];
-		calc(A,count+1);
-	}
-	public static void mul(int A[],int count) {
-		if(calc[2]==0) return ;
-		calc[2]--;
-		A[count+1] = A[count] * A[count+1];
-		calc(A,count+1);
-	}
-	public static void ave(int A[],int count) {
-		if(calc[3]==0) return ;
-		calc[3]--;
-		A[count+1] = A[count] / A[count+1];
-		calc(A,count+1);
-	}
-
-	public static void calc(int A[], int count)  {
-		System.out.println(A[count]);
-		sum(A,count);
-		
-		del(A,count);
-		mul(A,count);
-		ave(A,count);
-		for(int i=0; i<4 ; i++) {
-			if(calc[i]!=0) {
-				return;
+	public static void calc(int A[], int count, int calc[], int sum) {
+		if(count == A.length-1) {
+			result.add(sum);
+		}
+//		System.out.println("+: " +calc[0] +"  -: " +calc[1] +"  *: " +calc[2] +"  //: " +calc[3]);
+//		System.out.println("°ªÀº ? :"+ A[count]);
+		for(int i=0;i<calc.length;i++) {
+			switch(i) {
+			case 0:
+				if(calc[0]!=0) {
+					calc[0]--;
+					calc(A,count+1,calc,sum+A[count+1]);
+					calc[0]++;
+				}
+				break;
+			case 1:
+				if(calc[1]!=0) {
+					calc[1]--;
+					calc(A,count+1,calc,sum-A[count+1]);
+					calc[1]++;
+				}
+				break;
+			case 2:
+				if(calc[2]!=0) {
+					calc[2]--;
+					calc(A,count+1,calc,sum*A[count+1]);
+					calc[2]++;
+				}
+				break;
+			case 3:
+				if(calc[3]!=0) {
+					calc[3]--;
+					calc(A,count+1,calc,sum/A[count+1]);
+					calc[3]++;
+				}
+				break;
 			}
 		}
-		result.add(A[count]);
 	}
 	public static void solve() {
 		int Max=-1000000000;
